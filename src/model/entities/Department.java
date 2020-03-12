@@ -1,22 +1,23 @@
 package model.entities;
 
 import java.io.Serializable;
+
 // Serializable transform the objects in bytes, he will saved in archives, networked, and so on..
-public class Department implements Serializable{
+public class Department implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String name;
-	
+
 	public Department() {
-		
+
 	}
-	
+
 	public Department(Integer id, String name) {
 		this.id = id;
 		this.name = name;
-	
+
 	}
 
 	public Integer getId() {
@@ -34,8 +35,7 @@ public class Department implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		return "Department [id=" + id + ", name=" + name + "]";
@@ -66,9 +66,4 @@ public class Department implements Serializable{
 		return true;
 	}
 
-	
-	
-	
-	
-	
 }
