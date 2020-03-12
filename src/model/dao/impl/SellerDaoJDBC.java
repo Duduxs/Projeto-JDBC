@@ -1,10 +1,10 @@
 package model.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -101,6 +101,31 @@ public class SellerDaoJDBC implements SellerDao {
 		return null;
 	}
 
+	@Override
+	public List<Seller> findByDepartment(Department department) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		List<Seller> sell = new ArrayList<Seller>();
+		try {
+			st = conn.prepareStatement("select seller.*, department.Name from seller inner join department on DepartmentId = department.id where departmentId = ? order by seller.Id;");
+
+			st.setInt(1, department.getId());
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				sell.add(makeSeller(rs, department));
+			}
+			return sell;
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+	}
+
 	// Inicializable the department
 	private Department makeDepartment(ResultSet rs) throws SQLException {
 
@@ -113,16 +138,15 @@ public class SellerDaoJDBC implements SellerDao {
 
 	// Inicializable the seller
 	private Seller makeSeller(ResultSet rs, Department dep) throws SQLException {
-		
 
-			Seller sell = new Seller();
-			sell.setId(rs.getInt("Id"));
-			sell.setName(rs.getString("Name"));
-			sell.setEmail(rs.getString("Email"));
-			sell.setBirthDate(rs.getDate("BirthDate"));
-			sell.setBaseSalary(rs.getDouble("BaseSalary"));
-			sell.setDepartment(dep);
-			return sell;
+		Seller sell = new Seller();
+		sell.setId(rs.getInt("Id"));
+		sell.setName(rs.getString("Name"));
+		sell.setEmail(rs.getString("Email"));
+		sell.setBirthDate(rs.getDate("BirthDate"));
+		sell.setBaseSalary(rs.getDouble("BaseSalary"));
+		sell.setDepartment(dep);
+		return sell;
 	}
 
 }
