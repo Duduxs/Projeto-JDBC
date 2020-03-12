@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,33 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void insert(Seller obj) {
-		// TODO Auto-generated method stub
+// The date has to be date.sql not date.util!
+//		PreparedStatement st = null;
+//		try {
+//		st = conn.prepareStatement("insert into seller values (?, ?, ?, ?, ?, ?);");
+//		
+//		st.setInt(1, obj.getId());
+//		st.setString(2, obj.getName());
+//		st.setString(3, obj.getEmail());
+//		st.setDate(4,  obj.getBirthDate());
+//		st.setDouble(5, obj.getBaseSalary());
+//		st.setInt(6, obj.getDepartment().getId());
+//		
+//		int rows = st.executeUpdate();
+//		
+//		if(rows > 0) 
+//			System.out.println("Query executed with sucess, " + rows + " rows affected");
+//		else
+//			System.out.println("Query wasn't executed");
+//		
+//		
+//		}
+//		catch(SQLException e) {
+//			throw new DbException(e.getMessage());
+//		}
+//		finally {
+//			DB.closeStatement(st);
+//			}
 
 	}
 
@@ -44,8 +71,7 @@ public class SellerDaoJDBC implements SellerDao {
 		ResultSet rs = null;
 		try {
 
-			st = conn.prepareStatement(
-					"SELECT seller.*,department.Name as DepName "
+			st = conn.prepareStatement("SELECT seller.*,department.Name as DepName "
 					+ "FROM seller INNER JOIN department ON seller.DepartmentId = department.Id WHERE seller.Id = ?;");
 
 			st.setInt(1, id);
@@ -53,20 +79,8 @@ public class SellerDaoJDBC implements SellerDao {
 
 			if (rs.next()) {
 
-				Department dep = new Department();
-
-				dep.setId(rs.getInt("DepartmentId"));
-				dep.setName(rs.getString("DepName"));
-
-				Seller sell = new Seller();
-
-				sell.setId(rs.getInt("Id"));
-				sell.setName(rs.getString("Name"));
-				sell.setEmail(rs.getString("Email"));
-				sell.setBirthDate(rs.getDate("BirthDate"));
-				sell.setBaseSalary(rs.getDouble("BaseSalary"));
-				sell.setDepartment(dep);
-
+				Department dep = makeDepartment(rs);
+				Seller sell = makeSeller(rs, dep);
 				return sell;
 
 			}
@@ -85,6 +99,30 @@ public class SellerDaoJDBC implements SellerDao {
 	public List<Seller> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	// Inicializable the department
+	private Department makeDepartment(ResultSet rs) throws SQLException {
+
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));
+		dep.setName(rs.getString("DepName"));
+		return dep;
+
+	}
+
+	// Inicializable the seller
+	private Seller makeSeller(ResultSet rs, Department dep) throws SQLException {
+		
+
+			Seller sell = new Seller();
+			sell.setId(rs.getInt("Id"));
+			sell.setName(rs.getString("Name"));
+			sell.setEmail(rs.getString("Email"));
+			sell.setBirthDate(rs.getDate("BirthDate"));
+			sell.setBaseSalary(rs.getDouble("BaseSalary"));
+			sell.setDepartment(dep);
+			return sell;
 	}
 
 }
