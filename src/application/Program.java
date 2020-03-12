@@ -11,10 +11,13 @@ public class Program {
 		
 
 		
+		
 		Department d = new Department(1,"Books");
 		Seller s = new Seller(1,"Eduardo","duduxss3@gmail.com",new Date(),3700.00,d);
 		
 		System.out.println(s);
 		
+	
+
 	}
 }
