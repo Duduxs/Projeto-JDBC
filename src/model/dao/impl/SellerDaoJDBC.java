@@ -100,6 +100,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st = conn.prepareStatement("delete from seller where Id = ?;");
 			st.setInt(1, id);
 			
+		
 			int rows = st.executeUpdate();
 			
 			if(rows > 0)
