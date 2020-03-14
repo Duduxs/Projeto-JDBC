@@ -26,21 +26,22 @@ public class Program {
 //			System.out.println(x);
 //		}
 //
-		System.out.println("\n=== TEST 3: seller findAll! ===\n");
-		 sellerList = sellerDao.findAll();
-
-		for (Seller x : sellerList) {
-			System.out.println(x);
-		}
-		
+//		System.out.println("\n=== TEST 3: seller findAll! ===\n");
+//		 sellerList = sellerDao.findAll();
+//
+//		for (Seller x : sellerList) {
+//			System.out.println(x);
+//		}
+//		
 //		System.out.println("\n=== TEST 4: seller insert! ===\n");
 //		Seller newSeller = new Seller(null,"Edward Joselph","Edward@hotmail.com",new Date(04/11/2000), 3500.00,department);
 //		 sellerDao.insert(newSeller);
 //		 
-//		System.out.println("\n=== TEST 5: seller update! ===\n");
-//		Seller newSeller = new Seller(12,"Testando","Test@hotmail.com",new Date(01/01/2001), 2000.00,department);
-//		sellerDao.update(newSeller);
-//			 
+		System.out.println("\n=== TEST 5: seller update! ===\n");
+		Seller newSeller = sellerDao.findById(12);
+		newSeller.setEmail("testando@gmail.com");
+		sellerDao.update(newSeller);
+			 
 //			System.out.println("\n=== TEST 6: seller delet! ===\n");
 //			sellerDao.deleteById(18);
 
