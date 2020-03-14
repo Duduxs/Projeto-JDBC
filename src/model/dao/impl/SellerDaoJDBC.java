@@ -57,13 +57,64 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public void update(Seller obj) {
-		// TODO Auto-generated method stub
-
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try{
+			
+			st = conn.prepareStatement(
+				"update seller set Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? where Id = ? ;");
+			
+			st.setString(1, obj.getName());
+			st.setString(2, obj.getName());
+			st.setDate(3, new Date(obj.getBirthDate().getTime()));
+			st.setDouble(4, obj.getBaseSalary());
+			st.setInt(5, obj.getDepartment().getId());
+			st.setInt(6, obj.getId());
+			
+			int rows = st.executeUpdate();
+			
+			if(rows > 0)
+				System.out.println(rows + " Rows Affected!");
+			else
+				throw new DbException("Error, no rows affected!");
+			
+			
+			
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+		
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			
+			st = conn.prepareStatement("delete from seller where Id = ?;");
+			st.setInt(1, id);
+			
+			int rows = st.executeUpdate();
+			
+			if(rows > 0)
+				System.out.println(rows + " Rows Affected!");
+			else
+				throw new DbException("Error, no rows affected!");
+			
+			
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
